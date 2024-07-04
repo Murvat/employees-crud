@@ -1,3 +1,5 @@
+import React from "react"
+
 import './employees-list-item.css';
 
 const EmployeesListItem = ({ name, salary }) => {
