@@ -1,14 +1,8 @@
-import React, { useState } from "react"
+import React from "react"
 
 import './employees-list-item.css';
 
-const EmployeesListItem = ({ name, salary, onDelete }) => {
-    const [state, setState] = useState({
-        increase: false,
-        promoted: false
-    });
-    const { increase } = state;
-    const { promoted } = state;
+const EmployeesListItem = ({ name, salary, rise, increase, onDelete, onToggleProp }) => {
 
     let classNames = "list-group-item d-flex justify-content-between";
 
@@ -16,29 +10,23 @@ const EmployeesListItem = ({ name, salary, onDelete }) => {
         classNames += ' increase';
     }
 
-    if (promoted) {
+    if (rise) {
         classNames += ' like';
     }
-    const onIncrease = () => {
-        setState(prevState => ({ increase: !prevState.increase }))
-    }
 
-
-    const handlePromo = (e) => {
-        e.preventDefault()
-        setState(prevState => ({ promoted: !prevState.promoted }))
-    }
 
     return (
         <li className={classNames}>
             <span
                 className="list-group-item-label"
-                onClick={handlePromo}>{name}</span>
+                onClick={onToggleProp}
+                data-toggle='rise'>{name}</span>
             <input type="text" className="list-group-item-input" defaultValue={salary + '$'} />
             <div className='d-flex justify-content-center align-items-center'>
                 <button type="button"
                     className="btn-cookie btn-sm "
-                    onClick={onIncrease}
+                    onClick={onToggleProp}
+                    data-toggle='increase'
                 >
                     <i className="fas fa-cookie"></i>
                 </button>
