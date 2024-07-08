@@ -4,6 +4,7 @@ import { useState } from "react";
 import './employees-add-form.css';
 
 const EmployeesAddForm = ({ onAdd }) => {
+    console.log(onAdd)
     const [state, setState] = useState({
         name: '',
         salary: ''

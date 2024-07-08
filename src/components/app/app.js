@@ -9,6 +9,7 @@ import EmployeesAddForm from '../employees-add-form/employees-add-form';
 
 import './app.css';
 const App = () => {
+  ///data
   const initialData = [
     { name: "John C.", salary: 800, rise: true, increase: false, id: 1 },
     { name: "Alex M.", salary: 3000, rise: false, increase: true, id: 2 },
@@ -18,13 +19,14 @@ const App = () => {
 
   const [state, setState] = useState({
     data: initialData,
-    term: 'J'
+    term: ' ',
+    maxId: 4,
+    filter: ''
   });
-  const { term, data } = state;
 
-
-  const [maxId, setMaxId] = useState(4);
-
+  //state
+  const { term, data, maxId, filter } = state;
+  //func to search employee
   const searchEmp = (items, term) => {
     if (!term || term.length === 0) {
       return items;
@@ -36,40 +38,20 @@ const App = () => {
     })
 
   }
+
+  const onUpdateSearch = (term) => {
+    setState(prevState => ({
+      ...prevState,
+      term
+    }));
+
+  }
+  //number of emoloyees
   const employees = state.data.length;
+  //number of promoted epmloyees
   const increased = state.data.filter(item => item.increase).length;
-  const visibleData = searchEmp(data, term);
-  // const onToggleIncrease = (id) => {
-  //   // setState(({ data }) => {
-  //   //   const index = data.findIndex((elem) => elem.id === id);
-  //   //   const old = data[index];
-  //   //   const newItem = { ...old, increase: !old.increase };
-  //   //   const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
 
-  //   //   return {
-  //   //     data: newArr
-  //   //   }
-  //   // });
-
-  //   setState(({ data }) => ({
-  //     data: data.map(item => {
-  //       if (item.id === id) {
-  //         return { ...item, increase: !item.increase }
-  //       }
-  //       return item;
-  //     })
-  //   }))
-  // };
-  // const onToggleRise = (id) => {
-  //   setState(({ data }) => ({
-  //     data: data.map(item => {
-  //       if (item.id === id) {
-  //         return { ...item, rise: !item.rise }
-  //       }
-  //       return item;
-  //     })
-  //   }))
-  // };
+  //lifted state
   const onToggleProp = (id, prop) => {
     setState(({ data }) => ({
       data: data.map(item => {
@@ -81,6 +63,8 @@ const App = () => {
     }))
   };
 
+
+  //how to add new employee
   const addItem = (name, salary) => {
     const newItem = {
       name,
@@ -89,21 +73,16 @@ const App = () => {
       rise: false,
       id: maxId
     }
-    setMaxId(prevMaxId => prevMaxId + 1);
     setState(prevState => ({
-      data: [...prevState.data, newItem]
+      data: [...prevState.data, newItem],
+      maxId: prevState.maxId + 1,
     }));
   }
 
 
-
+  //how to delete employee
   const onDeleteItem = (id) => {
-
     setState(({ data }) => {
-      const index = data.findIndex(elem => elem.id === id);
-      // const before = data.slice(0, index);
-      // const after = data.slice(index + 1);
-      // const newArr = [...before, ...after];
       return {
         data: data.filter(item => item.id !== id),
       }
@@ -111,25 +90,47 @@ const App = () => {
     })
 
   }
+  //filter logic
+  const filterPost = (items, filter) => {
+    switch (filter) {
+      case 'rise':
+        return items.filter(item => item.rise);
+      case 'moreThan1000':
+        return items.filter(item => item.salary > 1000);
+      default:
+        return items;
 
-  const onUpdateSearch = (term) => {
-    setState({ term });
+
+    }
 
   }
+
+  //filter data
+  const onFilterSelect = (filter) => {
+    setState(prevState => ({
+      ...prevState,
+      filter
+    }))
+
+  }
+
+  //data which will be rendered
+  const visibleData = filterPost(searchEmp(data, term), filter);
+
   return (
     <div className="app">
       <AppInfo employees={employees} increased={increased} />
 
       <div className="search-panel">
         <SearchPanel onUpdateSearch={onUpdateSearch} />
-        <AppFilter />
+        <AppFilter filter={filter} onFilterSelect={onFilterSelect} />
       </div>
 
       <EmployeesList
         data={visibleData}
         onDelete={onDeleteItem}
         onToggleProp={onToggleProp} />
-      <EmployeesAddForm onAdd={addItem} />
+      <EmployeesAddForm onAdd={addItem} id={state.maxId} />
     </div>
   );
 
