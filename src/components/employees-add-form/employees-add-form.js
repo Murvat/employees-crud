@@ -4,31 +4,33 @@ import { useState } from "react";
 import './employees-add-form.css';
 
 const EmployeesAddForm = ({ onAdd }) => {
-    console.log(onAdd)
     const [state, setState] = useState({
         name: '',
         salary: ''
     })
-
     const { name, salary } = state;
+
+    //when change value of form
     const onValueChange = (e) => {
         e.preventDefault();
+
         const { name, value } = e.target;
         setState(prevState => ({
             ...prevState,
             [name]: value
         }))
-    }
-
-
+    };
+    //when we submit and add data into main array
     const onSubmit = (e) => {
         e.preventDefault();
-        onAdd(name, salary);
+
+        onAdd(name, salary);//odAdd function that add this employee to out array of elements
         setState({
             name: '',
-            salary: ''
+            salary: ''//resetting our input,form
         });
-    }
+
+    };
 
 
     return (

@@ -3,6 +3,7 @@ import React from "react"
 import './employees-list-item.css';
 
 const EmployeesListItem = ({ name, salary, rise, increase, onDelete, onToggleProp }) => {
+    console.log(increase)
 
     let classNames = "list-group-item d-flex justify-content-between";
 

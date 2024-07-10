@@ -10,7 +10,7 @@ const AppFilter = (props) => {
         { name: 'rise', label: 'На повышение' },
         { name: 'moreThan1000', label: 'З/П больше 1000$' },
     ]
-    //
+
     const buttons = buttonsData.map(({ name, label }) => {
         const active = props.filter === name;
         const clazz = active ? 'btn-light' : 'btn-outline-light';
@@ -21,11 +21,9 @@ const AppFilter = (props) => {
                 onClick={() => props.onFilterSelect(name)}>
                 {label}
 
-            </button>
-
-        )
+            </button>)
     })
-
+    //
     //
     return (
         <div className="btn-group">

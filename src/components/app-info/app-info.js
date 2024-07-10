@@ -4,7 +4,6 @@ import React from "react";
 import "./app-info.css";
 
 const AppInfo = ({ employees, increased }) => {
-    console.log(employees, increased)
     return (
         <div className="app-info">
             <h1>Учет сотрудников в компании N</h1>

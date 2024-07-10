@@ -26,43 +26,51 @@ const App = () => {
 
   //state 
   const { term, data, maxId, filter } = state;
-
-  //Search Start//
-  //func to search employee by array of employyes and term string logged into input
-  const searchEmp = (items, term) => {
-    if (!term || term.length === 0) {//check whether we have this string or not
-      return items;//if not leave array of employees
+  //add employees info
+  const employees = data.length;
+  const increased = data.filter(item => item.increase).length;
+  //ADD EMPLOYEE
+  const addItem = (name, salary) => {
+    const newItem = {
+      name,//name:name
+      salary,//salary:salary
+      increase: false,
+      rise: false,
+      id: maxId
     }
+    setState(prevState => ({
+      data: [...prevState.data, newItem],
+      maxId: prevState.maxId + 1,
 
-    return items.filter(item => {//if we added string then with method filer get elements who have this string
-      return item.name.indexOf(term) > -1;
-
-    })
+    }))
+  }
+  //DELETE EMPLOYEE
+  const onDeleteItem = (id) => {
+    setState(({ data }) => {
+      return {
+        data: data.filter(item => item.id !== id)//retur  new state without this id
+      }
+    });
 
   }
+  //SEARCH EMPLOYEE
+  const searchEmployee = (items, term) => {//items is an array of items , term is string by what we search
+    if (!term || term.length === 0) {
+      return items;
+    };
 
-
-  ///function that change term string in order to make search
+    return items.filter(item => {
+      return item.name.indexOf(term) > -1;//return an array of elements which names have this string
+    })
+  }
+  //How do i get term string?
   const onUpdateSearch = (term) => {
     setState(prevState => ({
       ...prevState,
-      term
-    }));
-
+      term  //teerm: term
+    }))
   }
-
-  //Search finish//
-
-
-  //number of emoloyees
-  const employees = state.data.length;
-
-  //number of promoted epmloyees
-  const increased = state.data.filter(item => item.increase).length;
-
-
-
-  //lifted state  to ADD STYLES start //
+  //ADD RISE ,ADD INCREASE
   const onToggleProp = (id, prop) => {//function to set or change props like rise,increase 
     setState(({ data }) => ({
       data: data.map(item => {
@@ -73,39 +81,8 @@ const App = () => {
       })
     }))
   };
-  //ADD STYLES finish//
-
-  //how to ADD NEW EMPLOYEE, START//
-  const addItem = (name, salary) => {//name and salary from attributes and then set it as state,
-    //using maxID counter//we pass it to child component
-    const newItem = {
-      name,
-      salary,
-      increase: false,
-      rise: false,
-      id: maxId
-    }
-    setState(prevState => ({
-      data: [...prevState.data, newItem],
-      maxId: prevState.maxId + 1,
-    }));
-  }
-
-  //how to delete employee
-  const onDeleteItem = (id) => {//func delete element with the exact id //we pass it to child component
-    setState(({ data }) => {
-      return {
-        data: data.filter(item => item.id !== id),
-      }
-
-    })
-
-  }
-
-  // ADD ,DELETE EMPLOYEE FINISH//
-  //filter logic
-  const filterPost = (items, filter) => {// get our array of employees get 
-    //value to filter and return new array depending on filter
+  //FILTER EMPLOYEES
+  const filterPost = (items, filter) => {
     switch (filter) {
       case 'rise':
         return items.filter(item => item.rise);// which has value rise equal to true
@@ -113,38 +90,41 @@ const App = () => {
         return items.filter(item => item.salary > 1000);//which has value moreThan1000 equal to true
       default:
         return items;
-
-
     }
+  };
 
-  }
-
-  //filter data
   const onFilterSelect = (filter) => {
     setState(prevState => ({
       ...prevState,
-      filter
+      filter//filter:filter
     }))
-
   }
 
-  //data which will be rendered
-  const visibleData = filterPost(searchEmp(data, term), filter);
 
+  const visibleData = filterPost(searchEmployee(data, term), filter)
   return (
     <div className="app">
-      <AppInfo employees={employees} increased={increased} />
+      <AppInfo
+        employees={employees}
+        increased={increased} />
 
       <div className="search-panel">
-        <SearchPanel onUpdateSearch={onUpdateSearch} />
-        <AppFilter filter={filter} onFilterSelect={onFilterSelect} />
+        <SearchPanel
+          onUpdateSearch={onUpdateSearch}
+        />
+        <AppFilter
+          filter={filter}
+          onFilterSelect={onFilterSelect} />
       </div>
 
       <EmployeesList
         data={visibleData}
         onDelete={onDeleteItem}
-        onToggleProp={onToggleProp} />
-      <EmployeesAddForm onAdd={addItem} id={state.maxId} />
+        onToggleProp={onToggleProp}
+
+
+      />
+      <EmployeesAddForm onAdd={addItem} id={maxId} />
     </div>
   );
 
