@@ -16,7 +16,7 @@ const App = () => {
     { name: "Carl W.", salary: 5000, rise: false, increase: false, id: 3 },
 
   ];
-
+  //initial state
   const [state, setState] = useState({
     data: initialData,
     term: ' ',
@@ -26,19 +26,23 @@ const App = () => {
 
   //state
   const { term, data, maxId, filter } = state;
-  //func to search employee
+
+  //Search Start
+  //func to search employee by array of employyes and term string logged into input
   const searchEmp = (items, term) => {
-    if (!term || term.length === 0) {
-      return items;
+    if (!term || term.length === 0) {//check whether we have this string or not
+      return items;//if not leave array of employees
     }
 
-    return items.filter(item => {
+    return items.filter(item => {//if we added string then with method filer get elements who have this string
       return item.name.indexOf(term) > -1;
 
     })
 
   }
 
+
+  ///function that change term string in order to make search
   const onUpdateSearch = (term) => {
     setState(prevState => ({
       ...prevState,
@@ -46,17 +50,22 @@ const App = () => {
     }));
 
   }
+
+  //Search finish
+
+
   //number of emoloyees
   const employees = state.data.length;
+
   //number of promoted epmloyees
   const increased = state.data.filter(item => item.increase).length;
 
-  //lifted state
-  const onToggleProp = (id, prop) => {
+  //lifted state  to add  styless
+  const onToggleProp = (id, prop) => {//function to set or change props like rise,increase 
     setState(({ data }) => ({
       data: data.map(item => {
-        if (item.id === id) {
-          return { ...item, [prop]: !item[prop] }
+        if (item.id === id) {//find item with that id and just change the prop
+          return { ...item, [prop]: !item[prop] }//change prop by opposite 
         }
         return item;
       })
@@ -91,12 +100,13 @@ const App = () => {
 
   }
   //filter logic
-  const filterPost = (items, filter) => {
+  const filterPost = (items, filter) => {// get our array of employees get 
+    //value to filter and return new array depending on filter
     switch (filter) {
       case 'rise':
-        return items.filter(item => item.rise);
+        return items.filter(item => item.rise);// which has value rise equal to true
       case 'moreThan1000':
-        return items.filter(item => item.salary > 1000);
+        return items.filter(item => item.salary > 1000);//which has value moreThan1000 equal to true
       default:
         return items;
 
