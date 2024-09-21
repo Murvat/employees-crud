@@ -7,7 +7,7 @@ const EmployeesAddForm = ({ onAdd }) => {
     const [state, setState] = useState({
         name: '',
         salary: ''
-    })
+    });
     const { name, salary } = state;
 
     //when change value of form

@@ -63,6 +63,7 @@ const App = () => {
       return item.name.indexOf(term) > -1;//return an array of elements which names have this string
     })
   }
+
   //How do i get term string?
   const onUpdateSearch = (term) => {
     setState(prevState => ({
@@ -70,6 +71,8 @@ const App = () => {
       term  //teerm: term
     }))
   }
+
+
   //ADD RISE ,ADD INCREASE
   const onToggleProp = (id, prop) => {//function to set or change props like rise,increase 
     setState(({ data }) => ({
@@ -121,7 +124,6 @@ const App = () => {
         data={visibleData}
         onDelete={onDeleteItem}
         onToggleProp={onToggleProp}
-
 
       />
       <EmployeesAddForm onAdd={addItem} id={maxId} />

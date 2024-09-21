@@ -4,15 +4,23 @@ import React, { useState } from "react";
 import './search-panel.css';
 
 const SearchPanel = (props) => {
-    const [state, setState] = useState({ term: '' })
+    const [state, setState] = useState({ term: '' });
+
+
+
     const onUpdateSearch = (e) => {
         e.preventDefault();
+
         const term = e.target.value;
+
         setState({ term });
 
         props.onUpdateSearch(term);
 
     }
+
+
+
     return (
         <input
             type="text"
